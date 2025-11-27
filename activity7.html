@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wanderly Travel Agency</title>
+  <meta name="description" content="Wanderly - curated tour packages, easy booking, and travel tips." />
+  <style>
+    :root{--accent:#FF6B6B;--dark:#0f1724;--muted:#6b7280;--card:#ffffff;--glass: rgba(255,255,255,0.06)}
+    *{box-sizing:border-box}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,'Helvetica Neue',Arial;margin:0;background:linear-gradient(180deg,#f7fbff 0%, #eef6ff 100%);color:var(--dark);-webkit-font-smoothing:antialiased}
+    header{background:transparent;padding:22px 6%;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#FFB86B);display:flex;align-items:center;justify-content:center;color:white;font-weight:800}
+    nav a{margin-left:18px;color:var(--dark);text-decoration:none;font-weight:600}
+    .hero{padding:48px 6%;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
+    .hero-left h1{font-size:34px;margin:0 0 10px} 
+    .hero-left p{color:var(--muted);margin:0 0 18px}
+    .cta-row{display:flex;gap:12px}
+    .btn{background:var(--accent);color:white;padding:12px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+    .btn.secondary{background:transparent;color:var(--dark);border:2px solid rgba(15,23,36,0.06)}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 6px 20px rgba(16,24,40,0.06)}
+
+    /* Packages */
+    .packages{padding:28px 6% 40px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .package{overflow:hidden;border-radius:12px}
+    .package img{width:100%;height:160px;object-fit:cover;display:block}
+    .package .info{padding:12px}
+    .price{float:right;font-weight:800;color:var(--accent)}
+
+    /* Gallery */
+    .gallery{padding:28px 6%}
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+    .gallery-grid img{width:100%;height:110px;object-fit:cover;border-radius:8px;cursor:pointer}
+
+    /* Tips */
+    .tips{padding:28px 6%;display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .tip{display:flex;gap:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));align-items:flex-start}
+    .tip h4{margin:0}
+    .sidebar .card{position:sticky;top:20px}
+
+    footer{padding:28px 6%;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+    /* booking modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal{width:100%;max-width:720px;background:white;border-radius:12px;padding:18px}
+    .form-row{display:flex;gap:10px}
+    .form-row .col{flex:1}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ee}
+
+    /* lightbox */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.8)}
+    .lightbox img{max-width:90%;max-height:90%;border-radius:8px}
+
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.tips{grid-template-columns:1fr}.hero-left h1{font-size:28px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><div class="logo">W</div><div>Wanderly</div></div>
+    <nav class="desktop-nav">
+      <a href="#packages">Packages</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#tips">Travel Tips</a>
+      <a href="#contact">Contact</a>
+      <button class="btn" id="openBookingTop">Book Now</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Experience the world — curated tours, effortless booking.</h1>
+      <p>Hand-picked packages for every traveler: solo trips, family holidays, adventure tours, and luxury getaways. Transparent pricing and 24/7 support.</p>
+      <div class="cta-row">
+        <button class="btn" id="openBooking">Start Booking</button>
+        <button class="btn secondary" id="viewPackages">View Packages</button>
+      </div>
+
+      <div style="margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div class="card" style="display:flex;align-items:center;gap:12px"><div style="width:48px;height:48px;border-radius:8px;background:var(--glass);display:flex;align-items:center;justify-content:center">🚗</div><div><strong>500+</strong><div style="font-size:13px;color:var(--muted)">Bookings last month</div></div></div>
+        <div class="card" style="display:flex;align-items:center;gap:12px"><div style="width:48px;height:48px;border-radius:8px;background:var(--glass);display:flex;align-items:center;justify-content:center">🌍</div><div><strong>40+</strong><div style="font-size:13px;color:var(--muted)">Destinations</div></div></div>
+        <div class="card" style="display:flex;align-items:center;gap:12px"><div style="width:48px;height:48px;border-radius:8px;background:var(--glass);display:flex;align-items:center;justify-content:center">💬</div><div><strong>24/7</strong><div style="font-size:13px;color:var(--muted)">Customer support</div></div></div>
+      </div>
+    </div>
+
+    <aside class="card">
+      <h3 style="margin-top:0">Quick Booking</h3>
+      <form id="miniBooking">
+        <label>Destination<br><input name="destination" placeholder="e.g. Bali" required></label><br><br>
+        <label>Check-in - Check-out<br><input type="date" name="from"> to <input type="date" name="to"></label><br><br>
+        <label>Travellers<br><input type="number" name="pax" min="1" value="2"></label><br><br>
+        <button class="btn" type="submit">Check Availability</button>
+      </form>
+    </aside>
+  </section>
+
+  <section id="packages" class="packages">
+    <h2>Featured Packages</h2>
+    <div class="grid" style="margin-top:12px">
+
+      <article class="package card">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=60" alt="Beach Paradise">
+        <div class="info">
+          <h3 style="margin:0">7-Day Beach Paradise <span class="price">₹29,999</span></h3>
+          <p style="color:var(--muted);margin:8px 0 0;font-size:14px">Sunset cruises, snorkeling and beachside dinners — family-friendly.</p>
+          <div style="margin-top:10px;display:flex;gap:8px"><button class="btn small" onclick="openBookingWith('7-Day Beach Paradise',29999)">Book</button><button class="btn secondary" onclick="viewDetails('Beach Paradise','A relaxed beach escape...')">Details</button></div>
+        </div>
+      </article>
+
+      <article class="package card">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=60" alt="Mountain Trek">
+        <div class="info">
+          <h3 style="margin:0">5-Day Mountain Trek <span class="price">₹19,499</span></h3>
+          <p style="color:var(--muted);margin:8px 0 0;font-size:14px">Guided hikes, campfires and panoramic views — ideal for adventurers.</p>
+          <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="openBookingWith('5-Day Mountain Trek',19499)">Book</button><button class="btn secondary" onclick="viewDetails('Mountain Trek','Challenging hikes with local guides...')">Details</button></div>
+        </div>
+      </article>
+
+      <article class="package card">
+        <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=1000&q=60" alt="City Break">
+        <div class="info">
+          <h3 style="margin:0">Weekend City Break <span class="price">₹8,999</span></h3>
+          <p style="color:var(--muted);margin:8px 0 0;font-size:14px">Museum passes, food walks, and boutique stays — perfect for short escapes.</p>
+          <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="openBookingWith('Weekend City Break',8999)">Book</button><button class="btn secondary" onclick="viewDetails('City Break','Culture-packed short trip...')">Details</button></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery">
+    <h2>Gallery</h2>
+    <div class="gallery-grid" style="margin-top:12px">
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60" alt="mountain" onclick="openLightbox(this.src)">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60" alt="beach" onclick="openLightbox(this.src)">
+      <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800&q=60" alt="city" onclick="openLightbox(this.src)">
+      <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800&q=60" alt="desert" onclick="openLightbox(this.src)">
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60" alt="forest" onclick="openLightbox(this.src)">
+      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=60" alt="island" onclick="openLightbox(this.src)">
+    </div>
+  </section>
+
+  <section id="tips" class="tips">
+    <div>
+      <h2>Top Travel Tips</h2>
+      <div style="margin-top:12px">
+        <div class="tip"><div style="font-size:20px">🧭</div><div><h4>Packing smart</h4><p style="color:var(--muted);margin:6px 0 0">Roll clothes to save space, carry a lightweight first-aid kit and always bring a universal adaptor.</p></div></div>
+        <div class="tip" style="margin-top:10px"><div style="font-size:20px">💳</div><div><h4>Money & cards</h4><p style="color:var(--muted);margin:6px 0 0">Notify your bank of travel, carry a small amount of local currency, and use cards with low foreign transaction fees.</p></div></div>
+        <div class="tip" style="margin-top:10px"><div style="font-size:20px">🔒</div><div><h4>Safety</h4><p style="color:var(--muted);margin:6px 0 0">Use hotel safes for documents, share your itinerary with someone back home, and keep digital copies of important documents.</p></div></div>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <div class="card">
+        <h3>Why book with Wanderly?</h3>
+        <ul style="color:var(--muted)">
+          <li>Transparent pricing</li>
+          <li>Local guides & vetted partners</li>
+          <li>Customizable itineraries</li>
+        </ul>
+        <p style="margin-top:10px"><button class="btn" id="openBookingSide">Get a Quote</button></p>
+      </div>
+    </aside>
+  </section>
+
+  <footer id="contact">
+    <div>
+      <strong>Wanderly Travel</strong><br>
+      <span style="color:var(--muted)">contact@wanderly.example | +91 98765 43210</span>
+    </div>
+    <div style="text-align:right">© <span id="year"></span> Wanderly Travel — All rights reserved</div>
+  </footer>
+
+  <!-- Booking modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal card">
+      <h3 id="modalTitle">Book Your Trip</h3>
+      <form id="bookingForm">
+        <div class="form-row">
+          <div class="col"><label>Package / Destination<br><input name="package" required></label></div>
+          <div class="col"><label>Price (INR)<br><input name="price" type="number"></label></div>
+        </div>
+        <div class="form-row" style="margin-top:10px">
+          <div class="col"><label>Check-in<br><input type="date" name="from"></label></div>
+          <div class="col"><label>Check-out<br><input type="date" name="to"></label></div>
+        </div>
+        <div style="margin-top:10px" class="form-row">
+          <div class="col"><label>Full name<br><input name="name" required></label></div>
+          <div class="col"><label>Email<br><input name="email" type="email" required></label></div>
+        </div>
+        <div style="margin-top:10px"><label>Notes<br><textarea name="notes" rows="3"></textarea></label></div>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+          <button type="button" class="btn secondary" id="closeModal">Cancel</button>
+          <button type="submit" class="btn">Confirm Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src=""></div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').style.display='flex'}
+    function closeLightbox(){document.getElementById('lightbox').style.display='none'}
+
+    // Modal controls
+    const modal = document.getElementById('modal');
+    function openModal(){modal.style.display='flex'}
+    function closeModal(){modal.style.display='none'}
+    document.getElementById('openBooking').addEventListener('click',openModal);
+    document.getElementById('openBookingTop').addEventListener('click',openModal);
+    document.getElementById('openBookingSide').addEventListener('click',openModal);
+    document.getElementById('closeModal').addEventListener('click',closeModal);
+
+    // Booking with prefilled data
+    function openBookingWith(pkg,price){document.getElementById('modalTitle').innerText = 'Book — '+pkg;document.querySelector('#bookingForm [name="package"]').value=pkg;document.querySelector('#bookingForm [name="price"]').value=price;openModal()}
+
+    // View details (simple alert for demo)
+    function viewDetails(title,desc){alert(title+" - " + desc)}
+
+    // Mini booking
+    document.getElementById('miniBooking').addEventListener('submit',function(e){e.preventDefault();const form=new FormData(e.target);alert('Searching availability for '+form.get('destination')+'... (demo)')});
+
+    // Booking submit (demo: logs to console and shows success)
+    document.getElementById('bookingForm').addEventListener('submit',function(e){e.preventDefault();const data=Object.fromEntries(new FormData(e.target));console.log('Booking submitted',data);alert('Thanks '+(data.name || 'traveler')+"! Your booking request for "+data.package+" has been received.");closeModal();e.target.reset();});
+
+    // Open packages
+    document.getElementById('viewPackages').addEventListener('click',function(){location.hash='#packages';window.scrollTo({top:document.getElementById('packages').offsetTop-60,behavior:'smooth'})});
+  </script>
+</body>
+</html>
